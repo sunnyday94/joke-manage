@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>    
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"   
+       xmlns:mybatis="http://mybatis.org/schema/mybatis-spring"  
+       xmlns:context="http://www.springframework.org/schema/context"  
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd
+       http://mybatis.org/schema/mybatis-spring http://mybatis.org/schema/mybatis-spring.xsd  
+       http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">  
+
+
+    <!-- 引入配置文件 -->  
+    <context:property-placeholder location="classpath:/com/sunny/joke/config/*.properties" />
+
+	<!-- 数据源的配置 -->
+	<bean id="dataSource" class="com.alibaba.druid.pool.DruidDataSource"
+		init-method="init" destroy-method="close">
+		<property name="driverClassName" value="${jdbc.driver}" />
+		<property name="url" value="${jdbc.url}" />
+		<property name="username" value="${jdbc.username}" />
+		<property name="password" value="${jdbc.password}" />
+		<!-- data source configuration -->
+		<property name="initialSize" value="200" /><!-- initial connections -->
+		<property name="maxActive" value="800" /><!-- MAX connections -->
+		<property name="maxIdle" value="100" /><!-- MAX idle connections -->
+		<property name="minIdle" value="50" /><!-- MIN idle connections -->
+		<!-- 处理mysql 8小时自动断开连接的问题 -->
+		<property name="testWhileIdle" value="true" />
+		<property name="testOnBorrow" value="false" />
+		<property name="testOnReturn" value="false" />
+		<property name="validationQuery" value="select 1" />
+		<property name="timeBetweenEvictionRunsMillis" value="20000" />
+		<property name="numTestsPerEvictionRun" value="100" />
+		<!--属性类型是字符串，通过别名的方式配置扩展插件，常用的插件有： 监控统计用的filter:stat 日志用的filter:log4j 防御SQL注入的filter:wall -->
+		<property name="filters" value="${druid.filters}" />
+	</bean>  
+
+    <!-- spring和MyBatis整合，不需要mybatis的配置映射文件 -->  
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">  
+        <property name="dataSource" ref="dataSource" />  
+        <!-- 自动扫描mapping.xml文件 -->  
+        <property name="mapperLocations" value="classpath:com/sunny/joke/dao/*.xml"></property>
+    </bean>  
+
+    <!-- DAO接口所在包名，Spring会自动查找其下的类 -->  
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">  
+		<property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"></property> 
+        <property name="basePackage" value="com.sunny.joke.dao" />  
+    </bean>  
+    
+
+    <!-- (事务管理)transaction manager, use JtaTransactionManager for global tx -->  
+    <bean id="transactionManager"  
+        class="org.springframework.jdbc.datasource.DataSourceTransactionManager">  
+        <property name="dataSource" ref="dataSource" />  
+    </bean>
+
+</beans> 
