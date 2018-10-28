@@ -133,8 +133,8 @@ public class JokeController {
 	public Integer checkDelPermiss(HttpServletRequest req){
 		String managerName = req.getParameter("managerName");
 		String[] managers = req.getParameterValues("managers");
-		for (int i = 0; i < managers.length; i++) {
-			if(!managerName.equals(managers[i])){
+		for (String manager : managers) {
+			if (!managerName.equals(manager)) {
 				return 0;
 			}
 		}
@@ -151,8 +151,8 @@ public class JokeController {
 	@ResponseBody
 	public Integer delJoke(Long[] ids){
 		try {
-			for (int i = 0; i < ids.length; i++) {
-				jokeService.delJoke(ids[i]);
+			for (Long id : ids) {
+				jokeService.delJoke(id);
 			}
 		} catch (Exception e) {
 			LOGGER.error("删除段子失败:{}",e.getMessage());
