@@ -49,9 +49,12 @@ public class JokeController {
 	/**
 	 * 日志
 	 */
-	public static final Logger LOGGER = LoggerFactory.getLogger(JokeController.class);
-	
-	private final String DATA = "yyyy-MM-dd HH:mm:ss";
+	private final Logger LOGGER = LoggerFactory.getLogger(JokeController.class);
+
+	/**
+	 * 日期格式化
+	 */
+	private SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	
 	@Resource(name="JokeService")
 	private JokeService jokeService;
@@ -110,8 +113,8 @@ public class JokeController {
 	public JokeInfo queryJokeInfoDetailById(@PathVariable("jokeInfoId")Long id){
 		try {
 			JokeInfo jokeInfo = jokeService.queryJokeInfoDetailById(id);
-			jokeInfo.setCreateTimeStr(new SimpleDateFormat(DATA).format(jokeInfo.getCreateTime()));
-			jokeInfo.setUpdateTimeStr(new SimpleDateFormat(DATA).format(jokeInfo.getUpdateTime()));
+			jokeInfo.setCreateTimeStr(sdf.format(jokeInfo.getCreateTime()));
+			jokeInfo.setUpdateTimeStr(sdf.format(jokeInfo.getUpdateTime()));
 			return jokeInfo;
 		} catch (Exception e) {
 			LOGGER.error("查询段子详情失败:{}",e.getMessage());
