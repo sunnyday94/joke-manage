@@ -86,7 +86,7 @@
                 			height="30"/> 
                  			<input type="button" id="updateChoose" value="选择"/> 
                				<input type="file" id="updateImgUpload" name="file" onchange="updateUploadImg(this)"
-               				style="display: none;" multiple />
+               				style="display: none;" multiple ="multiple"/>
                			</div>	
               		</div><br/><br/>		
 			    	<div class="form-group has-feedback">
@@ -189,7 +189,7 @@
 	function updateUploadImg(obj) {
 		var ctxValue = $(obj).val();
 		var ext = ctxValue.substring(ctxValue.lastIndexOf(".")).toUpperCase();
-		if(ext==".BMP"||ext==".PNG"||ext==".GIF"||ext==".JPG"||ext==".JPEG"){
+		if(ext===".BMP"||ext===".PNG"||ext===".GIF"||ext===".JPG"||ext===".JPEG"){
 			var fileElementId = $(obj).attr("id");
 			$.ajaxFileUpload({
 				url : "${ctx}/file/uploadFile",
@@ -197,12 +197,12 @@
 				dataType : 'json',
 				fileElementId : fileElementId,// file标签的id
 				success : function(data) {
-					if (data.code == 10000) {
+					if (data.code === 10000) {
 						$("#updateHeadPic").val("${ctx}/image/headPic/"+data.result);
 						$("#updateImg").attr("src", "${ctx}/image/headPic/"+data.result);
 						parent.layer.msg("上传成功", {time : 1000});
 					}
-					if (data.code == 10062){   //图片过大
+					if (data.code === 10062){   //图片过大
 						parent.layer.msg(data.message, {time : 1000});
 					}
 				}
