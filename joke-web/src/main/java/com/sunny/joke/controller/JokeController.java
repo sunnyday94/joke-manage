@@ -23,6 +23,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import com.google.common.collect.Maps;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -70,7 +71,7 @@ public class JokeController {
 	@RequestMapping(value="jokelist")
 	public ModelAndView goToJokeList(JokeInfo jokeInfo,PageBean<JokeInfo> pageBean,String managerName){
 		ModelAndView mav = new ModelAndView(Constants.PAGE_MAIN);
-		Map<String,Object> map  = new HashMap<String,Object>();
+		Map<String,Object> map  = Maps.newHashMap();
 		Page page = new Page();
 		page.setPageName(Constants.PAGE_JOKELIST.concat(".jsp"));
 		if(managerName!=null && !managerName.equals("")){
