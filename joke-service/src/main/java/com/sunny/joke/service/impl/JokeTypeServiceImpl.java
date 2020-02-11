@@ -19,12 +19,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.sunny.joke.dao.JokeTypeMapper;
 import com.sunny.joke.po.JokeType;
 import com.sunny.joke.service.JokeTypeService;
 
 @Service("JokeTypeService")
+@Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
 public class JokeTypeServiceImpl implements JokeTypeService {
 	
 	@Autowired
